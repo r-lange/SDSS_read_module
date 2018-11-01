@@ -12,6 +12,7 @@ class Spectrum(object):
 		self.filepath = filepath
 		self.datafile = fits.open(self.filepath)
 		self._ra = None
+		self._isValid(filepath)
 		
 # 		if not self._isValid:
 # 			pass
