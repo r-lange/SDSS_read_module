@@ -1,5 +1,6 @@
 from .errors import *
 from astropy.io import fits
+from astropy.table import Table
 
 # ========================
 # Define spectrum class
@@ -13,9 +14,7 @@ class Spectrum(object):
 		self.datafile = fits.open(self.filepath)
 		self._ra = None
 		self._isValid(filepath)
-		
-# 		if not self._isValid:
-# 			pass
+
 	
 	def _isValid(self, file=None):
 		# check file is valid
@@ -31,3 +30,21 @@ class Spectrum(object):
 				raise HDUKeyError("Key does not exist in header")
 			self._ra = hdr['RA']
 		return(self._ra)
+		
+	@property
+	def wavelength(self):
+		"""Wavelength binning, linear bins."""
+		if getattr(self,'_wavelength',None) is None:
+			self._wavelength = 10**self.datafile[1].data['loglam']
+		return(self._wavelength)
+	
+	@property
+	def flux(self):
+		if getattr(self,'_flux',None) is None:
+			self._flux = self.datafile[1].data['flux']
+		return(self._flux)
+    
+	def getspec(self):
+		'''return the spectrum as a table'''
+		t = Table([self.wavelength, self.flux], names=('wavelength','flux'))
+		return(t)
