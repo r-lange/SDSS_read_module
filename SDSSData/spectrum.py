@@ -1,17 +1,20 @@
-import .errors 
+from .errors import *
 from astropy.io import fits
 
 # ========================
 # Define spectrum class
 # ========================
 
-class Spectrum(Object):
+class Spectrum(object):
 	def __init__(self, filepath = None):
 		if filepath == None:
 			raise SDSSFileNotSpecified("A spectrum file must be specified.")
 		self.filepath = filepath
 		self.datafile = fits.open(self.filepath)
 		self._ra = None
+		
+# 		if not self._isValid:
+# 			pass
 	
 	def _isValid(self, file=None):
 		# check file is valid
