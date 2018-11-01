@@ -5,3 +5,6 @@ class SDSSFileNotSpecified(Exception):
 
 class HDUError(Exception):
 	pass
+
+class HDUKeyError(Exception):
+	pass
